@@ -1,0 +1,80 @@
+{
+  "items": {
+    "assassin_dagger": {
+      "rarity": "common",
+      "color": 15921906
+    },
+    "triple_strung_bow": {
+      "rarity": "rare",
+      "color": 5552490,
+      "shape": [
+        {
+          "col": 0,
+          "row": 0
+        },
+        {
+          "col": 1,
+          "row": 0
+        },
+        {
+          "col": 0,
+          "row": 1
+        },
+        {
+          "col": 1,
+          "row": 1
+        },
+        {
+          "col": 0,
+          "row": 2
+        },
+        {
+          "col": 1,
+          "row": 2
+        }
+      ]
+    },
+    "rat_king_bell": {
+      "rarity": "rare",
+      "color": 5552490
+    },
+    "ember_imp_cage": {
+      "rarity": "epic",
+      "color": 10116576
+    },
+    "volatile_whetstone": {
+      "rarity": "rare",
+      "color": 5552490
+    },
+    "clay_golem_core": {
+      "rarity": "ancient",
+      "color": 10115634
+    },
+    "wolf_totem": {
+      "rarity": "epic",
+      "color": 10116576
+    },
+    "ward_sprite_lantern": {
+      "rarity": "rare",
+      "color": 5552490
+    },
+    "clockwork_rookery": {
+      "rarity": "epic",
+      "color": 10116576
+    },
+    "marksman_charm": {
+      "rarity": "epic",
+      "color": 10116576
+    },
+    "duelist_relay": {
+      "rarity": "uncommon",
+      "color": 5213659
+    }
+  },
+  "heroes": {},
+  "enemies": {},
+  "drops": {},
+  "passives": {},
+  "stages": {},
+  "starterKits": {}
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- viewport-fit=cover extends content into the device's safe-area
+         insets (curved edges, punch-hole, status bar) so the canvas
+         actually fills the screen on Android. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Backpack Ascendancy</title>
+    <link rel="icon" type="image/png" href="assets/landing/icon.png" />
+    <link rel="apple-touch-icon" href="assets/landing/icon.png" />
+    <!-- Google tag (gtag.js) - Firebase Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VJFT4SR0M9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VJFT4SR0M9');
+    </script>
+    <script>
+      (function() {
+        try {
+          var isLanding = window.location.search.includes('landing=true') || window.self !== window.top;
+          if (isLanding) {
+            document.documentElement.classList.add('is-landing-mode');
+          }
+        } catch (e) {
+          document.documentElement.classList.add('is-landing-mode');
+        }
+      })();
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: 100%;
+        height: 100%;
+        background: #0d0d1a;
+        overflow: hidden;
+        /* iOS WKWebView: a slow inventory drag is otherwise interpreted as a
+           long-press and pops the native copy/share callout mid-gesture, and
+           the drag selects surrounding text. */
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        overscroll-behavior: none;
+        /* viewport-fit=cover already extends the canvas into the safe
+           areas. The horizontal safe-area-inset paddings (which Samsung
+           reports for the camera punch-hole on some devices) were
+           pushing the centred canvas to the right and leaving the
+           visible "black margin on the left". Dropping the horizontal
+           insets lets the canvas occupy the full screen width. We keep
+           the vertical insets so the canvas doesn't disappear under the
+           status / nav bars on devices that need them. */
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        padding-left: 0;
+        padding-right: 0;
+      }
+      body { display: flex; justify-content: center; align-items: center; }
+      /* Phaser scales the canvas with `transform: scale(...)`. Tell the
+         browser to use nearest-neighbor when up-scaling so text stays
+         crisp on high-DPR phones instead of bilinear-blurring. */
+      canvas {
+        height: 100% !important;
+        width: auto !important;
+        max-width: 100%;
+        margin: 0 !important;
+        /* iOS ignores user-scalable=no in Safari; without this a two-finger
+           pinch or double-tap zooms the canvas and desyncs pointer coords. */
+        touch-action: none;
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
+      }
+
+      /* Landing page 3D phone embedding: strictly lock canvas to virtual phone screen ratio */
+      html.is-landing-mode,
+      html.is-landing-mode body {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
+      }
+      html.is-landing-mode canvas {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        aspect-ratio: 390 / 844 !important;
+        object-fit: contain !important;
+        margin: auto !important;
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/main-3qKTirWr.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/phaser-0RJB29YE.js">
+  </head>
+  <body>
+  </body>
+</html>

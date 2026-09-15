@@ -1,0 +1,35 @@
+{
+  "id": "ranger",
+  "category": "hero",
+  "frameWidth": 64,
+  "frameHeight": 64,
+  "pivotX": 32,
+  "pivotY": 64,
+  "animations": {
+    "idle": {
+      "frames": 6,
+      "fps": 2,
+      "loop": true
+    },
+    "walk": {
+      "frames": 8,
+      "fps": 8,
+      "loop": true
+    },
+    "attack": {
+      "frames": 8,
+      "fps": 12,
+      "loop": false
+    },
+    "hit": {
+      "frames": 4,
+      "fps": 8,
+      "loop": false
+    },
+    "defend": {
+      "frames": 4,
+      "fps": 8,
+      "loop": false
+    }
+  }
+}
