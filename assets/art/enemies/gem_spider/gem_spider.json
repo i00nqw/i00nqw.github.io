@@ -1,0 +1,35 @@
+{
+  "id": "gem_spider",
+  "category": "enemy",
+  "frameWidth": 64,
+  "frameHeight": 64,
+  "pivotX": 32,
+  "pivotY": 64,
+  "animations": {
+    "idle": {
+      "frames": 2,
+      "fps": 2,
+      "loop": true
+    },
+    "walk": {
+      "frames": 4,
+      "fps": 8,
+      "loop": true
+    },
+    "attack": {
+      "frames": 4,
+      "fps": 12,
+      "loop": false
+    },
+    "hit": {
+      "frames": 2,
+      "fps": 8,
+      "loop": false
+    },
+    "die": {
+      "frames": 4,
+      "fps": 12,
+      "loop": false
+    }
+  }
+}

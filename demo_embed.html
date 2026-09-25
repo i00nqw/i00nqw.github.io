@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://backpackascendancy.com/">
+    <script>
+      if (window.self === window.top) {
+        window.location.replace('./');
+      }
+    </script>
+  
+    <meta charset="UTF-8" />
+    <!-- viewport-fit=cover extends content into the device's safe-area
+         insets (curved edges, punch-hole, status bar) so the canvas
+         actually fills the screen on Android. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Backpack Ascendancy</title>
+    <link rel="icon" type="image/png" href="assets/landing/icon.png" />
+    <link rel="apple-touch-icon" href="assets/landing/icon.png" />
+    <!-- Google tag (gtag.js) — loaded and configured by src/systems/Analytics.ts,
+         NOT here. This same file is the Android and iOS WebView document, where
+         a tag configured at parse time would file app traffic into the web data
+         stream on top of what the Firebase native bridge already reports. Only
+         the bundle can tell those apart (Capacitor.isNativePlatform()), so the
+         queue stub is all that lives here. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+    </script>
+    <script>
+      (function() {
+        try {
+          var isLanding = window.location.search.includes('landing=true') || window.self !== window.top;
+          if (isLanding) {
+            document.documentElement.classList.add('is-landing-mode');
+          }
+        } catch (e) {
+          document.documentElement.classList.add('is-landing-mode');
+        }
+      })();
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: 100%;
+        height: 100%;
+        background: #0d0d1a;
+        overflow: hidden;
+        /* iOS WKWebView: a slow inventory drag is otherwise interpreted as a
+           long-press and pops the native copy/share callout mid-gesture, and
+           the drag selects surrounding text. */
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        overscroll-behavior: none;
+        /* No safe-area padding: GAME_WIDTH is derived from the *full*
+           window aspect, so the canvas only fits without bars when its
+           container is the full viewport. Any padding here shrinks the
+           container, the aspects stop matching, and the canvas gets
+           letterboxed on all four sides. This selector also matches both
+           html and body, so an inset would be subtracted twice. */
+        padding: 0;
+      }
+      body { display: flex; justify-content: center; align-items: center; }
+      /* Phaser scales the canvas with `transform: scale(...)`. Tell the
+         browser to use nearest-neighbor when up-scaling so text stays
+         crisp on high-DPR phones instead of bilinear-blurring. */
+      canvas {
+        height: 100% !important;
+        width: auto !important;
+        max-width: 100%;
+        max-height: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+        /* iOS ignores user-scalable=no in Safari; without this a two-finger
+           pinch or double-tap zooms the canvas and desyncs pointer coords. */
+        touch-action: none;
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
+      }
+
+      /* On portrait mobile screens (aspect ratio <= 0.65), fill edge-to-edge */
+      @media (max-aspect-ratio: 13/20) {
+        canvas {
+          width: 100% !important;
+          height: 100% !important;
+          max-width: 100% !important;
+          max-height: 100% !important;
+        }
+      }
+
+      /* Landing page 3D phone embedding: strictly lock canvas to virtual phone screen ratio */
+      html.is-landing-mode,
+      html.is-landing-mode body {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
+      }
+      html.is-landing-mode canvas {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        aspect-ratio: 390 / 844 !important;
+        object-fit: contain !important;
+        margin: auto !important;
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/main-Cw2ODmz0.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/passiveTreeGeometry-BiPTmNzg.js">
+    <link rel="modulepreload" crossorigin href="./assets/phaser-0RJB29YE.js">
+    <link rel="modulepreload" crossorigin href="./assets/AdjacencyGraph-0DA1SJkn.js">
+    <link rel="modulepreload" crossorigin href="./assets/drops-BuNPDpAz.js">
+  </head>
+  <body>
+  </body>
+</html>
