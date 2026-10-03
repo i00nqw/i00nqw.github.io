@@ -1,0 +1,15 @@
+{
+  "id": "power_elemental_orb",
+  "category": "effect",
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "pivotX": 64,
+  "pivotY": 64,
+  "animations": {
+    "loop": {
+      "frames": 6,
+      "fps": 8,
+      "loop": true
+    }
+  }
+}

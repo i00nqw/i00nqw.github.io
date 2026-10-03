@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://backpackascendancy.com/">
+    <script>
+      if (window.self === window.top) {
+        window.location.replace('./');
+      }
+    </script>
+  
+    <meta charset="UTF-8" />
+    <meta name="backpack-ad-mode" content="simulated" />
+    <!-- viewport-fit=cover extends content into the device's safe-area
+         insets (curved edges, punch-hole, status bar) so the canvas
+         actually fills the screen on Android. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Backpack Ascendancy</title>
+    <link rel="icon" type="image/png" href="assets/landing/icon.png" />
+    <link rel="apple-touch-icon" href="assets/landing/icon.png" />
+    <!-- Google tag (gtag.js) — loaded and configured by src/systems/Analytics.ts,
+         NOT here. This same file is the Android and iOS WebView document, where
+         a tag configured at parse time would file app traffic into the web data
+         stream on top of what the Firebase native bridge already reports. Only
+         the bundle can tell those apart (Capacitor.isNativePlatform()), so the
+         queue stub is all that lives here. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+    </script>
+    <script>
+      (function() {
+        try {
+          var search = window.location.search;
+          var isLanding = search.includes('landing=true');
+          if (isLanding) {
+            document.documentElement.classList.add('is-landing-mode');
+          }
+          if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
+            document.documentElement.classList.add('is-native-app');
+          }
+          var host = window.location.hostname;
+          var isLocal = (
+            host === 'localhost' ||
+            host === '127.0.0.1' ||
+            host === '0.0.0.0' ||
+            host.startsWith('192.168.') ||
+            host.endsWith('.local') ||
+            search.includes('sharp=true')
+          ) && !search.includes('phone=true');
+          if (isLocal) {
+            document.documentElement.classList.add('is-local-session');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: 100%;
+        height: 100%;
+        background: #090912;
+        overflow: hidden;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        overscroll-behavior: none;
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #06060c;
+      }
+
+      /* Ambient dark fantasy backdrop for desktop web / itch.io players */
+      #web-shell {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        perspective: 1400px;
+        perspective-origin: 50% 50%;
+        background: radial-gradient(circle at 50% 50%, #151528 0%, #090914 60%, #030307 100%);
+      }
+
+      /* Subtle ambient aura behind the phone */
+      #web-shell::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 500px;
+        height: 900px;
+        background: radial-gradient(circle, rgba(240, 201, 74, 0.08) 0%, rgba(66, 133, 244, 0.04) 50%, transparent 75%);
+        filter: blur(50px);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* The 3D phone chassis that flips upon defeat */
+      #phone-chassis {
+        position: relative;
+        z-index: 10;
+        height: min(900px, calc(100vh - 16px));
+        width: calc(min(900px, calc(100vh - 16px)) * (390 / 844));
+        max-width: calc(100vw - 20px);
+        aspect-ratio: 390 / 844;
+        transform-style: preserve-3d;
+        transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform;
+      }
+
+      /* 180° Flip state on death */
+      #phone-chassis.flipped {
+        transform: rotateY(180deg);
+      }
+
+      /* Front and Back Face Panels */
+      .phone-face {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 46px;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        overflow: hidden;
+      }
+
+      /* FRONT FACE: Game canvas + Phone bezel notch */
+      .phone-front {
+        background: #020204;
+        box-shadow: 
+          0 0 0 10px #13131d,
+          0 0 0 12px #28283a,
+          0 0 0 13px #0d0d16,
+          0 26px 70px rgba(0, 0, 0, 0.9),
+          0 0 40px rgba(240, 201, 74, 0.08);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: rotateY(0deg);
+        z-index: 2;
+      }
+
+      /* Dynamic Island / Camera Notch */
+      .phone-notch {
+        position: absolute;
+        top: 13px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 86px;
+        height: 22px;
+        background: #000;
+        border-radius: 20px;
+        z-index: 100;
+        pointer-events: none;
+        box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.08);
+      }
+
+      /* Speaker Slit */
+      .phone-speaker {
+        position: absolute;
+        top: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 48px;
+        height: 3px;
+        background: #252530;
+        border-radius: 3px;
+        z-index: 100;
+        pointer-events: none;
+      }
+
+      /* Physical Button hints on phone side */
+      #phone-chassis::before {
+        content: '';
+        position: absolute;
+        left: -14px;
+        top: 120px;
+        width: 3px;
+        height: 50px;
+        background: #282838;
+        border-radius: 3px 0 0 3px;
+        box-shadow: 0 70px 0 #282838;
+      }
+
+      #phone-chassis::after {
+        content: '';
+        position: absolute;
+        right: -14px;
+        top: 140px;
+        width: 3px;
+        height: 65px;
+        background: #282838;
+        border-radius: 0 3px 3px 0;
+      }
+
+      /* BACK FACE: Flipped Titanium Backplate with Defeat Banners */
+      .phone-back {
+        background: radial-gradient(circle at 50% 25%, #18182b 0%, #0a0a14 70%, #040408 100%);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 
+          0 0 0 10px #13131d,
+          0 0 0 12px #28283a,
+          0 0 0 13px #0d0d16,
+          0 26px 70px rgba(0, 0, 0, 0.9),
+          0 0 40px rgba(240, 201, 74, 0.1);
+        transform: rotateY(180deg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 28px 24px;
+        z-index: 1;
+      }
+
+      /* Camera lenses simulation on backplate */
+      .phone-back-camera-island {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        opacity: 0.85;
+      }
+      .back-lens {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #020205;
+        border: 2px solid #2f2f45;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.8), 0 2px 6px rgba(0,0,0,0.6);
+      }
+
+      .phone-back-content {
+        width: 100%;
+        max-width: 320px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .web-defeat-skull {
+        font-size: 2.6rem;
+        margin-bottom: 8px;
+        filter: drop-shadow(0 0 16px rgba(235, 87, 87, 0.6));
+      }
+
+      .web-defeat-title {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+        font-size: 1.4rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        color: #fff;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+        text-shadow: 0 0 18px rgba(240, 201, 74, 0.35);
+      }
+
+      .web-defeat-desc {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 0.8rem;
+        line-height: 1.45;
+        color: #9292a8;
+        margin-bottom: 18px;
+        max-width: 280px;
+      }
+
+      .web-defeat-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        width: 100%;
+        margin-bottom: 22px;
+      }
+
+      .web-defeat-stat-box {
+        background: rgba(18, 18, 30, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        padding: 8px 4px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .web-defeat-stat-val {
+        font-family: monospace;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #f0c94a;
+      }
+
+      .web-defeat-stat-lbl {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 0.6rem;
+        text-transform: uppercase;
+        color: #6a6a82;
+        margin-top: 2px;
+      }
+
+      /* List of Banners (Android, iOS, Discord) */
+      .web-defeat-banners {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .defeat-banner {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: #0d0d1b;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 10px;
+        padding: 10px 14px;
+        text-decoration: none;
+        color: #fff;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      }
+
+      .banner-icon-wrap {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .banner-svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .banner-text {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        flex-grow: 1;
+      }
+
+      .banner-sub {
+        font-family: monospace;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: #7e7e9a;
+      }
+
+      .banner-main {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 0.95rem;
+        font-weight: 800;
+        line-height: 1.15;
+      }
+
+      .banner-action-arrow {
+        font-size: 1rem;
+        color: #f0c94a;
+        transition: transform 0.2s ease;
+      }
+
+      .defeat-banner:hover .banner-action-arrow {
+        transform: translateX(4px);
+      }
+
+      /* Android Play Store Banner */
+      .banner-android {
+        border-color: rgba(66, 133, 244, 0.45);
+      }
+      .banner-android:hover {
+        background: rgba(66, 133, 244, 0.18);
+        border-color: #4285f4;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(66, 133, 244, 0.3);
+      }
+
+      /* iOS Coming Soon Banner */
+      .banner-ios.banner-disabled {
+        border-style: dashed;
+        border-color: rgba(255, 255, 255, 0.22);
+        cursor: default;
+        opacity: 0.82;
+      }
+
+      .banner-badge-soon {
+        font-family: monospace;
+        font-size: 0.6rem;
+        font-weight: 800;
+        color: #f0c94a;
+        background: rgba(240, 201, 74, 0.16);
+        border: 1px solid rgba(240, 201, 74, 0.4);
+        padding: 3px 7px;
+        border-radius: 4px;
+      }
+
+      /* Discord Banner */
+      .banner-discord {
+        border-color: rgba(88, 101, 242, 0.45);
+      }
+      .banner-discord:hover {
+        background: rgba(88, 101, 242, 0.18);
+        border-color: #5865F2;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(88, 101, 242, 0.3);
+      }
+
+      .web-try-again-btn {
+        background: #f0c94a;
+        color: #06060e;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        font-family: monospace;
+        font-size: 0.84rem;
+        font-weight: 800;
+        cursor: pointer;
+        width: 100%;
+        box-shadow: 0 4px 16px rgba(240, 201, 74, 0.4), inset 0 1px 0 #fff;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .web-try-again-btn:hover {
+        background: #ffdf6d;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(240, 201, 74, 0.6);
+      }
+
+      /* Close Button on Flipped Backplate */
+      .phone-back-close-btn {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: #e0e0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        z-index: 10;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      }
+      .phone-back-close-btn:hover {
+        background: rgba(235, 87, 87, 0.2);
+        border-color: rgba(235, 87, 87, 0.6);
+        color: #ff8080;
+        transform: scale(1.08);
+        box-shadow: 0 4px 16px rgba(235, 87, 87, 0.3);
+      }
+      .phone-back-close-btn:active {
+        transform: scale(0.95);
+      }
+
+      /* Secondary Close & Return to Game Button */
+      .web-secondary-back-btn {
+        background: transparent;
+        color: #a0a0ba;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-family: monospace;
+        font-size: 0.78rem;
+        font-weight: 700;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 8px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        letter-spacing: 0.5px;
+      }
+      .web-secondary-back-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+      }
+
+      /* Footer Links on Backplate */
+      .web-defeat-footer-links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        margin-top: 12px;
+      }
+      .web-itch-page-link {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 0.74rem;
+        color: #7b7b95;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+      .web-itch-page-link:hover {
+        color: #f0c94a;
+        text-decoration: underline;
+      }
+
+      /* Floating Re-Open Defeat Button on Game Screen */
+      .web-floating-defeat-btn {
+        position: absolute;
+        bottom: 20px;
+        right: 16px;
+        background: rgba(18, 18, 28, 0.92);
+        border: 1px solid rgba(240, 201, 74, 0.5);
+        color: #f0c94a;
+        padding: 8px 14px;
+        border-radius: 20px;
+        font-family: monospace;
+        font-size: 0.76rem;
+        font-weight: 700;
+        cursor: pointer;
+        z-index: 50;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        backdrop-filter: blur(8px);
+      }
+      .web-floating-defeat-btn:hover {
+        background: #f0c94a;
+        color: #06060e;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(240, 201, 74, 0.4);
+      }
+
+      /* MOBILE VIEWPORT (max-width: 600px) — Edge-to-edge full bleed */
+      @media (max-width: 600px) {
+        #web-shell {
+          background: #0d0d1a !important;
+          perspective: none !important;
+        }
+        #web-shell::before {
+          display: none !important;
+        }
+        #phone-chassis {
+          width: 100vw !important;
+          height: 100vh !important;
+          max-width: 100vw !important;
+          max-height: 100vh !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+          border: none !important;
+          aspect-ratio: auto !important;
+          overflow: hidden !important;
+        }
+        .phone-face {
+          border-radius: 0 !important;
+          box-shadow: none !important;
+        }
+        .phone-notch,
+        .phone-speaker,
+        #phone-chassis::before,
+        #phone-chassis::after,
+        .phone-back-camera-island {
+          display: none !important;
+        }
+      }
+
+      /* LOCAL DEV SESSION (:3000 / localhost): SHARP CORNERS (NO PHONE ROUNDING) & 9:16 SCREEN */
+      html.is-local-session #phone-chassis {
+        width: calc(min(900px, calc(100vh - 16px)) * (9 / 16)) !important;
+        aspect-ratio: 9 / 16 !important;
+        border-radius: 0 !important;
+      }
+      html.is-local-session .phone-face,
+      html.is-local-session .phone-front,
+      html.is-local-session .phone-back {
+        border-radius: 0 !important;
+      }
+      html.is-local-session .phone-front {
+        box-shadow: 
+          0 0 0 1px #28283c,
+          0 0 0 3px #101018,
+          0 18px 50px rgba(0, 0, 0, 0.9) !important;
+      }
+      html.is-local-session .phone-notch,
+      html.is-local-session .phone-speaker,
+      html.is-local-session #phone-chassis::before,
+      html.is-local-session #phone-chassis::after,
+      html.is-local-session .phone-back-camera-island {
+        display: none !important;
+      }
+      html.is-local-session canvas {
+        aspect-ratio: 9 / 16 !important;
+      }
+
+      /* LANDING DEMO EMBEDDING OR NATIVE APP OVERRIDES */
+      html.is-landing-mode #web-shell,
+      html.is-native-app #web-shell {
+        background: #0d0d1a !important;
+        perspective: none !important;
+      }
+      html.is-landing-mode #web-shell::before,
+      html.is-native-app #web-shell::before {
+        display: none !important;
+      }
+      html.is-landing-mode #phone-chassis,
+      html.is-native-app #phone-chassis {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        aspect-ratio: auto !important;
+        transform: none !important;
+      }
+      html.is-landing-mode .phone-face,
+      html.is-native-app .phone-face {
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+      html.is-landing-mode .phone-back,
+      html.is-native-app .phone-back {
+        display: none !important;
+      }
+      html.is-landing-mode .phone-notch,
+      html.is-landing-mode .phone-speaker,
+      html.is-native-app .phone-notch,
+      html.is-native-app .phone-speaker {
+        display: none !important;
+      }
+
+      #game-mount {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Phaser canvas scaling: locked strictly to 390 / 844 aspect ratio */
+      canvas {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        aspect-ratio: 390 / 844 !important;
+        object-fit: contain !important;
+        margin: auto !important;
+        padding: 0 !important;
+        display: block !important;
+        touch-action: none;
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
+      }
+
+      /* On mobile viewports or native app, allow dynamic aspect fill */
+      @media (max-width: 600px) {
+        canvas {
+          aspect-ratio: auto !important;
+          object-fit: fill !important;
+        }
+      }
+
+      html.is-native-app canvas {
+        aspect-ratio: auto !important;
+        object-fit: fill !important;
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/main-DLnn0LjK.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/passiveTreeGeometry-Tju2Wj_n.js">
+    <link rel="modulepreload" crossorigin href="./assets/phaser-0RJB29YE.js">
+    <link rel="modulepreload" crossorigin href="./assets/AdjacencyGraph-CkzRXukQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/SupporterPack-BLKVLv0l.js">
+    <link rel="modulepreload" crossorigin href="./assets/drops-fJ5Txo1k.js">
+  </head>
+  <body>
+    <div id="web-shell">
+      <div id="phone-chassis">
+        <!-- Front Face: Screen & Game Mount -->
+        <div class="phone-face phone-front">
+          <div class="phone-notch"></div>
+          <div class="phone-speaker"></div>
+          <div id="game-mount"></div>
+          <button id="webReopenDefeatBtn" class="web-floating-defeat-btn" type="button" style="display: none;" title="Open Run Defeat Summary">
+            <span>💀 Defeat Summary</span>
+          </button>
+        </div>
+
+        <!-- Back Face: 3D Flipped Titanium Backplate with Defeat Banners -->
+        <div class="phone-face phone-back">
+          <button id="webCloseBackplateBtn" class="phone-back-close-btn" type="button" aria-label="Close and return to game" title="Back to Game">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+
+          <div class="phone-back-camera-island">
+            <div class="back-lens"></div>
+            <div class="back-lens"></div>
+            <div class="back-lens"></div>
+          </div>
+
+          <div class="phone-back-content">
+            <div class="web-defeat-skull">💀</div>
+            <h2 class="web-defeat-title">RUN TERMINATED</h2>
+            <p class="web-defeat-desc">The dungeon claimed your loadout. Rearrange your pack and delve again.</p>
+            
+            <div class="web-defeat-stats">
+              <div class="web-defeat-stat-box">
+                <span class="web-defeat-stat-val" id="webDefeatHero">Warrior</span>
+                <span class="web-defeat-stat-lbl">Hero</span>
+              </div>
+              <div class="web-defeat-stat-box">
+                <span class="web-defeat-stat-val" id="webDefeatFloor">Stage 1-1</span>
+                <span class="web-defeat-stat-lbl">Depth</span>
+              </div>
+              <div class="web-defeat-stat-box">
+                <span class="web-defeat-stat-val" id="webDefeatKills">0</span>
+                <span class="web-defeat-stat-lbl">Enemies Slain</span>
+              </div>
+            </div>
+
+            <!-- List of Banners requested by User -->
+            <div class="web-defeat-banners">
+              <!-- Android Play Market Banner -->
+              <a href="https://play.google.com/store/apps/details?id=com.backpackascendancy.game" target="_blank" rel="noopener noreferrer" class="defeat-banner banner-android" title="Get Backpack Ascendancy on Google Play">
+                <div class="banner-icon-wrap">
+                  <svg class="banner-svg" viewBox="0 0 512 512" aria-hidden="true">
+                    <path fill="#4285F4" d="M47.8 17.5c-4.4 4.7-6.9 12-6.9 21.6v433.8c0 9.6 2.5 16.9 6.9 21.6l2.4 2.2 243-243v-5.4L49.2 15.3l-1.4 2.2z"/>
+                    <path fill="#FBBC04" d="M374.3 325.2l-81.1-81.1v-5.4l81.1-81.1 1.8 1 96 54.5c27.4 15.5 27.4 41 0 56.6l-96 54.5-1.8 1z"/>
+                    <path fill="#EA4335" d="M293.2 244.1L47.8 494.5c9 9.5 23.8 10.7 40.5 1.3l286-162.4-81.1-89.3z"/>
+                    <path fill="#34A853" d="M293.2 238.7L88.3 16.2C71.6 6.8 56.8 8 47.8 17.5l245.4 221.2z"/>
+                  </svg>
+                </div>
+                <div class="banner-text">
+                  <span class="banner-sub">OUT NOW ON ANDROID</span>
+                  <span class="banner-main">Google Play</span>
+                </div>
+                <span class="banner-action-arrow">➔</span>
+              </a>
+
+              <!-- iOS Coming Soon Banner -->
+              <div class="defeat-banner banner-ios banner-disabled" title="iOS version coming soon to the App Store">
+                <div class="banner-icon-wrap">
+                  <svg class="banner-svg" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true">
+                    <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 66.7 34.6 137.9c16.9 34.8 39.4 73 72.4 73.6 29.5.5 41-19.4 76.5-19.4 34.5 0 45.4 19.4 75.9 19.4 32.8 0 53.6-34.9 70.4-69.6 19.5-40.1 27.5-79 27.9-81-1.3-.6-53-20.7-53-65.7zM250.7 101.4c15.2-18.9 25.7-45.1 22.8-71.4-22.1 1-48.4 14.8-63.7 33.3-13.6 16.1-25.5 42.6-22.3 67.9 24.6 1.9 48-10.9 63.2-29.8z"/>
+                  </svg>
+                </div>
+                <div class="banner-text">
+                  <span class="banner-sub">COMING SOON TO IOS</span>
+                  <span class="banner-main">App Store</span>
+                </div>
+                <span class="banner-badge-soon">SOON</span>
+              </div>
+
+              <!-- Discord Community Banner -->
+              <a href="https://discord.gg/7Aw2rkYKXH" target="_blank" rel="noopener noreferrer" class="defeat-banner banner-discord" title="Join Backpack Ascendancy Discord Community">
+                <div class="banner-icon-wrap">
+                  <svg class="banner-svg" viewBox="0 0 127.14 96.36" fill="currentColor" aria-hidden="true">
+                    <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
+                  </svg>
+                </div>
+                <div class="banner-text">
+                  <span class="banner-sub">DISCORD COMMUNITY</span>
+                  <span class="banner-main">Join the Guild</span>
+                </div>
+                <span class="banner-action-arrow">➔</span>
+              </a>
+            </div>
+
+            <!-- Action Buttons: Try Again & Close/Return to Game -->
+            <button id="webTryAgainBtn" class="web-try-again-btn" type="button">
+              <span>⚔️ TRY AGAIN (NEW RUN)</span>
+            </button>
+            <button id="webBackToGameBtn" class="web-secondary-back-btn" type="button">
+              <span>✕ CLOSE &amp; RETURN TO GAME</span>
+            </button>
+
+            <!-- Itch.io Game Page Link -->
+            <div class="web-defeat-footer-links">
+              <a href="https://i00nqw.itch.io/backpack-ascendancy" target="_top" class="web-itch-page-link" title="Open Backpack Ascendancy on itch.io">
+                Visit itch.io Game Page ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function() {
+        function closeDefeatBackplate() {
+          var chassis = document.getElementById('phone-chassis');
+          if (chassis) {
+            chassis.classList.remove('flipped');
+          }
+          var reopenBtn = document.getElementById('webReopenDefeatBtn');
+          if (reopenBtn) {
+            reopenBtn.style.display = 'flex';
+          }
+        }
+
+        function openDefeatBackplate() {
+          var chassis = document.getElementById('phone-chassis');
+          if (chassis) {
+            chassis.classList.add('flipped');
+          }
+          var reopenBtn = document.getElementById('webReopenDefeatBtn');
+          if (reopenBtn) {
+            reopenBtn.style.display = 'none';
+          }
+        }
+
+        function handleDefeat(data) {
+          var isLanding = document.documentElement.classList.contains('is-landing-mode');
+          var isNative = document.documentElement.classList.contains('is-native-app');
+          if (isLanding || isNative) return;
+
+          var chassis = document.getElementById('phone-chassis');
+          if (!chassis) return;
+
+          var heroEl = document.getElementById('webDefeatHero');
+          var floorEl = document.getElementById('webDefeatFloor');
+          var killsEl = document.getElementById('webDefeatKills');
+
+          if (heroEl) heroEl.textContent = data.heroName || 'Warrior';
+          if (floorEl) floorEl.textContent = 'Stage ' + (data.stageIndex || 1) + '-' + (data.deepestNode || 1);
+          if (killsEl) killsEl.textContent = String(data.kills || 0);
+
+          // Perform the 180° phone flip to reveal the backplate and banners
+          openDefeatBackplate();
+        }
+
+        window.addEventListener('message', function(e) {
+          if (e.data && e.data.type === 'BACKPACK_ASCENDANCY_LANDING_DEATH') {
+            handleDefeat(e.data);
+          }
+        });
+
+        window.addEventListener('backpack:defeat', function(e) {
+          if (e.detail) handleDefeat(e.detail);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+          var retryBtn = document.getElementById('webTryAgainBtn');
+          if (retryBtn) {
+            retryBtn.addEventListener('click', function() {
+              closeDefeatBackplate();
+              setTimeout(function() {
+                window.location.reload();
+              }, 400);
+            });
+          }
+
+          var closeBtn = document.getElementById('webCloseBackplateBtn');
+          if (closeBtn) {
+            closeBtn.addEventListener('click', closeDefeatBackplate);
+          }
+
+          var backBtn = document.getElementById('webBackToGameBtn');
+          if (backBtn) {
+            backBtn.addEventListener('click', closeDefeatBackplate);
+          }
+
+          var reopenBtn = document.getElementById('webReopenDefeatBtn');
+          if (reopenBtn) {
+            reopenBtn.addEventListener('click', openDefeatBackplate);
+          }
+
+          window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+              var chassis = document.getElementById('phone-chassis');
+              if (chassis && chassis.classList.contains('flipped')) {
+                closeDefeatBackplate();
+              }
+            }
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

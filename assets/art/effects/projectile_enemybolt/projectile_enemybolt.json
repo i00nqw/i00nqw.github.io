@@ -1,0 +1,15 @@
+{
+  "id": "projectile_enemybolt",
+  "category": "effect",
+  "frameWidth": 32,
+  "frameHeight": 32,
+  "pivotX": 16,
+  "pivotY": 16,
+  "animations": {
+    "loop": {
+      "frames": 4,
+      "fps": 8,
+      "loop": true
+    }
+  }
+}

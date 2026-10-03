@@ -1,0 +1,15 @@
+{
+  "id": "skeleton_king_void_beam_v1",
+  "category": "effect",
+  "frameWidth": 128,
+  "frameHeight": 256,
+  "pivotX": 64,
+  "pivotY": 128,
+  "animations": {
+    "loop": {
+      "frames": 4,
+      "fps": 8,
+      "loop": true
+    }
+  }
+}
