@@ -1,0 +1,15 @@
+# Robots.txt for Backpack Ascendancy (https://backpackascendancy.com/)
+User-agent: *
+Allow: /
+Allow: /privacy/
+Allow: /assets/
+Allow: /site.webmanifest
+Allow: /app-ads.txt
+Allow: /favicon.ico
+Allow: /sitemap.xml
+
+# Keep developer tools out of search results.
+Disallow: /editor.html
+
+# Authoritative XML Sitemap
+Sitemap: https://backpackascendancy.com/sitemap.xml

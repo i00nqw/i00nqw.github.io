@@ -1,0 +1,15 @@
+{
+  "id": "boss_impact_large",
+  "category": "effect",
+  "frameWidth": 64,
+  "frameHeight": 64,
+  "pivotX": 32,
+  "pivotY": 32,
+  "animations": {
+    "loop": {
+      "frames": 9,
+      "fps": 8,
+      "loop": true
+    }
+  }
+}
