@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "version": "1.4.0",
+  "mode": "pages",
+  "production": true,
+  "adMode": "simulated",
+  "devButton": "",
+  "platform": "",
+  "entries": [
+    "editor",
+    "landing",
+    "main"
+  ],
+  "includesScenarioHarness": false,
+  "chunks": {
+    "assets/phaser-0RJB29YE.js": "e4253de2f4ae53fdcb9a3a1a8c5d539c6debedd22604fcaf9ccda0a6ec45b5b0",
+    "assets/main-BSoa6qC8.js": "b9ea9b19f0e34a1561c091a1f6f0da766b5f595757d09192861b057d57a8f018",
+    "assets/editor-DAf-cd48.js": "f9f1172c96c677cd9dc58a36ba6e6670967bc1a3891d7eee0f5366a7e02000a3",
+    "assets/EnemyCombat-By44aadG.js": "45b7e9906ecc49ccc452f38e3359ab822145a2241d9129e260c06af2dd2b8187",
+    "assets/landing-GskLIPj7.js": "04ab34e9ae1f36a5fe286e5c90b15ea0a67e8826d7af5e01a8ab6fe89cd4a34e",
+    "assets/passiveTreeGeometry-7-bokent.js": "86eab254bb070e3e5c7211f0783595ed70531be61d9d6d98934dbe0013adf3c7",
+    "assets/itemDescriptions-D3qn8JEc.js": "e5aa3fcaa1cf1cb0812df095a74e5ccdaa009406ec69543951d3dcb42c6b898e",
+    "assets/SupporterPack-DrzHn8Te.js": "e09b93fed80ee8ff9d1481141dee1f14f0701465704a387b03380fc61342940f",
+    "assets/PlayStoreReviewModal-B2GgEpU3.js": "1b5f82b6368ee7126e3815edbcb811ad1597bf4e35c475ba53276973ea2479b2",
+    "assets/PlayStoreReview-BWmIJjZH.js": "b000786d86e244895b6350fce368f60b03ea142d531d22f67df559df9d64cc0c",
+    "assets/web-CShyZlZS.js": "1623e10f1bd9dbf1ecc619fa42400f722624f2687c83e46f72818967a4d15fe6"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "pharaoh_wraith_sand_vortex_v1",
+  "category": "effect",
+  "frameWidth": 128,
+  "frameHeight": 128,
+  "pivotX": 64,
+  "pivotY": 64,
+  "animations": {
+    "loop": {
+      "frames": 4,
+      "fps": 8,
+      "loop": true
+    }
+  }
+}

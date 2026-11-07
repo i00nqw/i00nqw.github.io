@@ -1,0 +1,15 @@
+{
+  "id": "melee_slash_spear",
+  "category": "effect",
+  "frameWidth": 96,
+  "frameHeight": 96,
+  "pivotX": 48,
+  "pivotY": 48,
+  "animations": {
+    "loop": {
+      "frames": 4,
+      "fps": 8,
+      "loop": true
+    }
+  }
+}

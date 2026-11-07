@@ -1,0 +1,43 @@
+# Robots.txt for Backpack Ascendancy (https://backpackascendancy.com/)
+User-agent: *
+Allow: /
+Allow: /items/
+Allow: /privacy/
+Allow: /assets/
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /site.webmanifest
+Allow: /app-ads.txt
+Allow: /favicon.ico
+Allow: /sitemap.xml
+
+# Keep developer tools out of search results.
+Disallow: /editor.html
+
+# Explicitly welcome AI Search & Answer Engine Crawlers (ChatGPT, Perplexity, Claude, Gemini, Apple)
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Authoritative XML Sitemap
+Sitemap: https://backpackascendancy.com/sitemap.xml
