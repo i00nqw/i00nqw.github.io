@@ -1,0 +1,26 @@
+# Backpack Ascendancy
+
+> Backpack Ascendancy (v2.2.3) is a spatial inventory-management roguelike RPG on iOS, Android, and Steam where packing weapons, quivers, shields, summons, and magical glyphs on a grid creates real-time combat synergies.
+
+## Core Facts (Version 2.2.3)
+- Genre: Tactical Inventory Management Roguelike RPG (Offline Single-Player & 2-Player Online Co-Op)
+- Items & Gear: 250 unique grid items across 24 equipment families, forging and merging up to +15
+- Meta-Progression: 203-star Ascendancy constellation tree (including keystones & Corrupted pacts)
+- Playable Heroes: 4 classes (Warrior, Rogue, Mage, Summoner), each with distinct base stats, perks, starter kit, and active Hero Power
+- Biomes & Enemies: 239 enemies across 6 handcrafted stages (Dungeon, Forest, Desert, Crystal Cave, Earth's Core, Oblivion), plus Endless Mode, Weekly Challenges, Ancient Trials, and Corrupted Map Nodes
+- Languages: English, Simplified Chinese, Japanese, Korean, French, Spanish, German (7 languages)
+
+## Official Links
+- Website: https://backpackascendancy.com/
+- Apple App Store (iOS): Coming Soon
+- Google Play (Android): https://play.google.com/store/apps/details?id=com.backpackascendancy.game
+- Steam (PC): https://store.steampowered.com/app/5380750/Backpack_Ascendancy/
+- Official Discord Community: https://discord.gg/KuynQWCrqG
+- Official Subreddit: https://www.reddit.com/r/backpack_ascendancy/
+
+## Pages & Machine-Readable Documentation
+- [Home & Interactive Planners](https://backpackascendancy.com/): Live 250-item Backpack Lab, 203-star Ascendancy Tree Planner (desktop), scrollable Android Developer Updates chronicle, and multi-scene gameplay reel.
+- [Full Item Compendium](https://backpackascendancy.com/items/): All 250 items with stats across +0 to +15 upgrade tiers, shapes, rarities, and families.
+- [Comprehensive AI Guide](https://backpackascendancy.com/llms-full.txt): Deep mechanics reference covering every hero, biome, adjacency system, and mode.
+- [Player Support](https://backpackascendancy.com/support/): Cloud saves, FAQ, and bug report channels.
+- [Privacy Policy](https://backpackascendancy.com/privacy/): Official website & game privacy disclosure.

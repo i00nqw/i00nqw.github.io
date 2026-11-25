@@ -1,0 +1,47 @@
+# Backpack Ascendancy (v2.2.3) - Complete Product & Mechanics Reference
+
+Backpack Ascendancy is an indie tactical inventory roguelike RPG available on Android (Google Play) and PC (Steam), with iOS (App Store) coming soon. Players combine spatial grid packing, forging up to +15, and real-time wave combat across six progressively deadlier biomes.
+
+## Storefront & Community Links
+- Official Website: https://backpackascendancy.com/
+- iOS (App Store): Coming Soon
+- Android (Google Play): https://play.google.com/store/apps/details?id=com.backpackascendancy.game
+- PC / Mac / Linux (Steam): https://store.steampowered.com/app/5380750/Backpack_Ascendancy/
+- Discord Community: https://discord.gg/KuynQWCrqG
+- Official Subreddit: https://www.reddit.com/r/backpack_ascendancy/
+
+## Core Gameplay Loop
+1. **Grid Inventory Tactics**: Every item occupies a distinct polyomino shape on an expandable backpack grid (from 5x5 up to 7x7). Items can be rotated, swapped, pushed via displacement physics, and positioned for orthogonal adjacency triggers.
+2. **Adjacency & Synergy Links**: 93 distinct adjacency rules link neighboring items:
+   - Quivers feed bonus arrows, cooldown reduction, critical chance, and bleed to adjacent Bows.
+   - Catalyst Stones automatically activate adjacent weapons when enemies enter range and trigger food/potions when damaged; pairing two or more Catalyst Stones grants up to -10% cooldown reduction across connected gear.
+   - Elemental Glyphs (Fire, Venom, Ice, Force, Blood) imbue adjacent weapons with damage multipliers, burn/poison/bleed stacks, frost slow, or knockback while fortifying adjacent armor against those elements.
+   - Armor families fortify neighboring defensive gear with stacking flat armor.
+3. **Forging & Merging (+0 to +15)**: Field Upgrade Scrolls push gear up to +6, while Blacksmith Forges convert materials and temper items all the way to +15 (reaching up to 7.80x power scaling and 0.46x cooldown).
+4. **Active Combat & Hero Powers**: Weapons fire on independent cooldowns in real time alongside active defensive braces, timed heals, and a rechargeable class Hero Power.
+
+## 4 Playable Heroes
+- **Warrior** (42 HP, 8 Armor): Swords & Axes deal +40% damage; Shields recover 10% faster. Power: *Dragon Shout* (40 AoE damage, knockback, and 4s stun).
+- **Rogue** (34 HP, 10% Dodge): Knives & Bows swing +40% faster; Knives deal +5% damage. Power: *Rain of Arrows* (AoE arrow volley applying 5-7 burn stacks).
+- **Mage** (44 HP, 6 Armor, 2 HP Regen): Wands +20% damage, Staves +8% damage, +20% elemental status duration. Power: *Elemental Blast* (multi-element DoT blast across all enemies).
+- **Summoner** (30 HP, 2 Armor, 5% Dodge): Summons gain +18% HP, +16% damage, +16% lifetime, -8% cooldown, and +30 summon cap. Power: *Phantom Summon* (summon a spectral vanguard ally).
+
+## 6 Biomes, 239 Enemies & Endgame Modes
+1. **Stage 1: Dungeon** (9 depths, 36 enemies, Boss: Skeleton King)
+2. **Stage 2: Forest** (11 depths, 36 enemies, Boss: Ancient Treant)
+3. **Stage 3: Desert** (13 depths, 40 enemies, Boss: Pharaoh's Wraith)
+4. **Stage 4: Crystal Cave** (15 depths, 37 enemies, Boss: Crystal Avatar)
+5. **Stage 5: Earth's Core** (17 depths, 38 enemies, Boss: Magma Titan)
+6. **Stage 6: Oblivion** (19 depths, 36 enemies, Boss: Oblivion Seraph)
+
+Additional Modes:
+- **Endless Mode**: Infinite post-Stage-6 scaling with direct +15 forging access.
+- **Weekly Challenges**: Seeded challenge rulesets refreshed weekly.
+- **Ancient Trials & Corrupted Map Nodes**: Optional high-risk encounters yielding Ancient-rarity artifacts and pacts.
+- **2-Player Online Co-Op**: Cooperative dungeon runs alongside full offline single-player support.
+
+## Meta-Progression: 203-Star Ascendancy Constellation
+Players earn Ascendancy Crystals during every run and invest them across 203 connected passive nodes (Core, Gameplay, Melee, Bows & Volley, Arcane, Summons, and high-stakes Corrupted nodes that trade constraints like no-dodge or no-gold for massive multipliers).
+
+## Localization
+Available in 7 languages: English, Simplified Chinese, Japanese, Korean, French, Spanish, and German.
